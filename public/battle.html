@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #0056b3;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #004494;
+        }
+
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .message.warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        #battleResults {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="main.html">Home</a></li>
+            <li><a href="mainquestion.html">Question</a></li>
+            <li><a href="user.html">User</a></li>
+            <li><a href="spell.html">Spell</a></li>
+            <li><a href="create_class.html">Class</a></li>
+            <li><a href="customization.html">Customization</a></li>
+        </ul>
+    </nav>
+
+    <h1>Battle Arena</h1>
+    
+    <!-- Battle Form -->
+    <div class="container">
+        <h2>Initiate Battle</h2>
+        <label for="userId1">User ID 1:</label>
+        <input type="number" id="userId1" min="1">
+        <label for="userId2">User ID 2:</label>
+        <input type="number" id="userId2" min="1">
+        <button id="battleButton">Start Battle</button>
+        <div id="battleMessage" class="message"></div>
+    </div>
+
+    <!-- Battle Results -->
+    <div class="container">
+        <h2>Battle Results</h2>
+        <div id="battleResults">
+            <!-- Results will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Link to the battle.js file -->
+    <script src="battle.js"></script>
+</body>
+</html>

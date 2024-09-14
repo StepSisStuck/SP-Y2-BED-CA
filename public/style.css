@@ -1,0 +1,415 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333; /* Changed to dark color for readability */
+}
+
+/* Navigation Bar */
+nav {
+    background-color: rgba(0, 0, 0, 0.6); /* Darker background for nav bar */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #0056b3;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9); /* Light background with slight opacity */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    color: #0056b3;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333; /* Dark color for labels */
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s;
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
+    border-color: #0056b3;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 14px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.form-container button:hover {
+    background-color: #004494;
+    transform: scale(1.05);
+}
+
+/* Character Customization Page Styles */
+#customization-form {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#customization-form h2 {
+    margin-bottom: 20px;
+    color: #0056b3;
+}
+
+#customization-form input {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s;
+}
+
+#customization-form input:focus {
+    border-color: #0056b3;
+}
+
+#customization-form button {
+    width: 100%;
+    padding: 14px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#customization-form button:hover {
+    background-color: #004494;
+}
+
+#customization-details {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#customization-details h2 {
+    margin-bottom: 20px;
+    color: #0056b3;
+}
+
+#customization-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Message Styles */
+.message {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.message.show {
+    display: block;
+    animation: pop 0.5s ease-out;
+}
+
+/* Animation */
+@keyframes pop {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pet Table */
+.pet-list-container {
+    margin-top: 30px;
+}
+
+.pet-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pet-table th, .pet-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.pet-table th {
+    background-color: #0056b3;
+    color: white;
+}
+
+.pet-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.pet-table tr:hover {
+    background-color: #ddd;
+}
+
+.pet-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Update Form */
+.update-form {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.update-form h2 {
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+.update-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.update-form input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.update-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.update-form button:hover {
+    background-color: #004494;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    nav ul {
+        margin-top: 10px;
+        flex-direction: column;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .form-container,
+    .update-form,
+    .pet-list-container,
+    #customization-form,
+    #customization-details {
+        max-width: 100%;
+    }
+}
+
+/* Review Form Styles */
+.review-form {
+    margin-bottom: 20px;
+}
+
+.review-form h2 {
+    margin-bottom: 10px;
+}
+
+.review-form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.review-form input, .review-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.review-form button {
+    margin-top: 10px;
+}
+
+/* Reviews Table Styles */
+.reviews-table-container {
+    margin-top: 20px;
+}
+
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reviews-table th, .reviews-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.reviews-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+
+/* Form Container */
+.form-container {
+    max-width: 1000px; /* Increased width */
+    margin: 50px auto; /* Adjusted margin */
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* Table Styles */
+.pet-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.pet-table th, .pet-table td {
+    border: 1px solid #ddd;
+    padding: 12px; /* Increased padding */
+    text-align: left;
+    word-wrap: break-word; /* Ensure text wraps */
+}
+
+.pet-table th {
+    background-color: #0056b3;
+    color: white;
+}
+
+.pet-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.pet-table tr:hover {
+    background-color: #ddd;
+}
+
+.pet-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Actions Column */
+.pet-table td.actions {
+    max-width: 150px; /* Set a max width */
+    white-space: nowrap; /* Prevent overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spell Management</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #0056b3;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #004494;
+        }
+
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .message.warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        table th {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        table td.actions {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="main.html">Home</a></li>
+            <li><a href="mainquestion.html">Question</a></li>
+            <li><a href="user.html">User</a></li>
+            <li><a href="spell.html">Spell</a></li>
+            <li><a href="create_class.html">Class</a></li>
+            <li><a href="customization.html">Customization</a></li>
+        </ul>
+    </nav>
+
+    <h1>Manage Spells</h1>
+    
+    <!-- Spell Creation Form -->
+    <div class="container">
+        <h2>Create Spell</h2>
+        <label for="spellName">Name:</label>
+        <input type="text" id="spellName">
+        <label for="spellDescription">Description:</label>
+        <textarea id="spellDescription"></textarea>
+        <label for="spellPower">Power:</label>
+        <input type="number" id="spellPower" min="1">
+        <button id="createSpellButton">Create Spell</button>
+        <div id="createSpellMessage" class="message"></div>
+        <div id="warningMessage" class="message"></div>
+    </div>
+    
+    <!-- Spell List -->
+    <div class="container">
+        <h2>Spells List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Power</th>
+                    <th>User ID</th>
+                    <th class="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="spellTableBody">
+                <!-- Spells will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Link to the spell.js file -->
+    <script src="spell.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Customization</title>
+    <link rel="stylesheet" href="style.css"> <!-- Adjust the path to your CSS file -->
+    <script defer src="customization.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="mainquestion.html">Question</a></li>
+                <li><a href="user.html">User</a></li>
+                <li><a href="spell.html">Spell</a></li>
+                <li><a href="create_class.html">Class</a></li>
+                <li><a href="customization.html">Customization</a></li>
+            </ul>
+        </nav>
+        <h1>Character Customization</h1>
+    </header>
+    <main>
+        <section id="customization-form">
+            <h2>Create or Update Customization</h2>
+            <form id="customization-form-element">
+                <input type="text" id="appearance" placeholder="Appearance" required>
+                <input type="text" id="abilities" placeholder="Abilities" required>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <section id="customization-details">
+            <h2>Retrieve Customization</h2>
+            <input type="number" id="retrieve-user-id" placeholder="User ID" required>
+            <button id="retrieve-button">Retrieve</button>
+            <div id="customization-info">
+                <p id="customization-appearance"></p>
+                <p id="customization-abilities"></p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
