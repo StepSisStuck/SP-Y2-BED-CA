@@ -6,6 +6,7 @@
 
 
 # About This Project
+This project is for BED CA2. If you wish to view CA1, please refer to the link below.
 This project is a continuation of the CA1. 
 For more information on CA1: https://github.com/StepSisStuck/SP-Y2-BED-CA2/tree/CA1
 
