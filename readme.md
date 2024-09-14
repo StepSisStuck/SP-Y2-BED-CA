@@ -7,7 +7,7 @@
 
 # About This Project
 This project is a continuation of the CA1. 
-For more information on CA1: https://github.com/ST0503-BED/bed-ca1-StepSisStuck
+For more information on CA1: https://github.com/StepSisStuck/SP-Y2-BED-CA2/tree/CA1
 
 # Before you start
 In the case that the node_modules folder does not exist, you can run the following command to install the required modules:
