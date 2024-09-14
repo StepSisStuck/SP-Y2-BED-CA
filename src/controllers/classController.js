@@ -1,157 +1,133 @@
-const db = require('../config/db'); 
+const Class = require('../models/classModel');
+const GameUser = require('../models/gameUserModel');
+const CompletedClasses = require('../models/completedClassesModel');
 
-// Create a new class
-exports.createClass = async (req, res) => {
-  const { name, description, required_points, date, time } = req.body;
+// Controller function to create a new class
+module.exports.createClass = (req, res) => {
+    const { name, description, required_points } = req.body;
 
-  try {
-    const query =
-      "INSERT INTO Classes (name, description, required_points, date, time, user_id) VALUES (?, ?, ?, ?, ?, ?)";
-    await db.promise().query(query, [name, description, required_points, date, time, req.user_id]);
-    res.status(201).send("Class created successfully!");
-  } catch (error) {
-    console.error("Error creating class:", error);
-    res.status(500).send("Error creating class");
-  }
-};
+    // Check if required fields are provided
+    if (!name || !description || !required_points) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
 
-// Update an existing class
-exports.updateClass = async (req, res) => {
-  const classId = req.params.id;
-  const { name, description, required_points, date, time } = req.body;
+    const data = { name, description, required_points };
 
-  try {
-    const query =
-      "UPDATE Classes SET name = ?, description = ?, required_points = ?, date = ?, time = ? WHERE class_id = ?";
-    await db.promise().query(query, [name, description, required_points, date, time, classId]);
-    res.status(200).json({ message: "Class updated successfully." });
-  } catch (err) {
-    console.error("Failed to update class:", err);
-    res.status(500).json({ message: "Failed to update class." });
-  }
-};
-
-// Fetch all classes
-exports.getAllClasses = async (req, res) => {
-  try {
-    const query = `
-      SELECT
-        c.class_id,
-        c.name AS class_name,
-        c.description,
-        c.required_points,
-        c.date,
-        c.time,
-        c.user_id AS creator_id,
-        u.user_id AS joined_user_id,
-        u.username AS joined_username
-      FROM Classes c
-      LEFT JOIN UserClasses uc ON c.class_id = uc.class_id
-      LEFT JOIN User u ON uc.user_id = u.user_id
-    `;
-    
-    const [results] = await db.promise().query(query);
-    
-    // Use a map to aggregate users by class
-    const classMap = new Map();
-    
-    results.forEach(row => {
-      const { class_id, class_name, description, required_points, date, time, creator_id, creator_username, joined_user_id, joined_username } = row;
-      
-      if (!classMap.has(class_id)) {
-        classMap.set(class_id, {
-          class_id,
-          name: class_name,
-          description,
-          required_points,
-          date,
-          time,
-          user_id:creator_id,
-          users: []
-        });
-      }
-      
-      if (joined_user_id) {
-        classMap.get(class_id).users.push({
-          user_id: joined_user_id,
-          username: joined_username
-        });
-      }
+    // Insert the new class into the database
+    Class.insertSingle(data, (err, result) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        const newClass = {
+            class_id: result.insertId,
+            name,
+            description,
+            required_points
+        };
+        res.status(201).json({ message: "Class created successfully", class: newClass });
     });
-    
-    // Convert map values to an array
-    const classes = Array.from(classMap.values());
-    
-    res.status(200).json(classes);
-  } catch (err) {
-    console.error("Failed to fetch classes:", err);
-    res.status(500).json({ message: "Failed to fetch classes." });
-  }
 };
 
-
-// Delete a class by ID
-exports.deleteClass = async (req, res) => {
-  const classId = req.params.id;
-
-  try {
-    const [result] = await db.promise().query("DELETE FROM Classes WHERE class_id = ?", [classId]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Class not found." });
-    }
-
-    res.status(200).json({ message: "Class deleted successfully." });
-  } catch (err) {
-    console.error("Failed to delete class:", err);
-    res.status(500).json({ message: "Failed to delete class." });
-  }
+// Controller function to get all classes
+module.exports.getAllClasses = (req, res) => {
+    // Retrieve all classes from the database
+    Class.findAll((err, classes) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        res.status(200).json(classes);
+    });
 };
 
+// Controller function to update a class
+module.exports.updateClass = (req, res) => {
+    const class_id = req.params.class_id;
+    const { name, description, required_points } = req.body;
 
-
-exports.joinClass = async (req, res) => {
-  const userId = req.user_id; 
-  const classId = req.params.id;
-
-  try {
-    // Check if the class exists
-    const [classCheckResults] = await db.promise().query('SELECT * FROM Classes WHERE class_id = ?', [classId]);
-    if (classCheckResults.length === 0) {
-      return res.status(404).json({ message: "Class not found." });
+    // Check if required fields are provided
+    if (!name || !description || !required_points) {
+        return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Check if the user is already joined
-    const [userClassCheckResults] = await db.promise().query('SELECT * FROM UserClasses WHERE user_id = ? AND class_id = ?', [userId, classId]);
-    if (userClassCheckResults.length > 0) {
-      return res.status(400).json({ message: "User already joined this class." });
-    }
+    const data = { name, description, required_points };
 
-    // Check if the user has enough points
-    const [userResults] = await db.promise().query('SELECT points FROM User WHERE user_id = ?', [userId]);
-    if (userResults.length === 0) {
-      return res.status(404).json({ message: "User not found." });
-    }
-    const userPoints = userResults[0].points;
-
-    const [classRequirements] = await db.promise().query('SELECT required_points FROM Classes WHERE class_id = ?', [classId]);
-    const requiredPoints = classRequirements[0].required_points;
-
-    if (userPoints < requiredPoints) {
-      return res.status(400).json({ message: "Insufficient points to join this class." });
-    }
-
-    // Deduct points from the user
-    await db.promise().query('UPDATE User SET points = points - ? WHERE user_id = ?', [requiredPoints, userId]);
-
-    // Add the user to the class
-    await db.promise().query('INSERT INTO UserClasses (user_id, class_id) VALUES (?, ?)', [userId, classId]);
-
-    res.status(200).json({ message: "Successfully joined the class." });
-  } catch (err) {
-    console.error("Failed to join class:", err);
-    res.status(500).json({ message: "Failed to join class." });
-  }
+    // Update the class in the database
+    Class.updateSingle(class_id, data, (err, result) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Class not found" });
+        }
+        res.status(200).json({ message: "Class updated successfully" });
+    });
 };
 
+// Controller function to delete a class
+module.exports.deleteClass = (req, res) => {
+    const class_id = req.params.class_id;
 
+    // Delete the class from the database
+    Class.deleteSingle(class_id, (err, result) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Class not found" });
+        }
+        res.status(200).json({ message: "Class deleted successfully" });
+    });
+};
+
+// Controller function to attend a class
+module.exports.attendClass = (req, res) => {
+    const { user_id } = req.body;
+    const { class_id } = req.params;
+
+    // Check if user ID is provided
+    if (!user_id) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Find the user by ID
+    GameUser.findById(user_id, (err, user) => {
+        if (err) {
+            return res.status(500).json({ message: "Error finding user", error: err });
+        }
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Find the class by ID
+        Class.findById(class_id, (err, classInfo) => {
+            if (err) {
+                return res.status(500).json({ message: "Error finding class", error: err });
+            }
+            if (!classInfo) {
+                return res.status(404).json({ message: "Class not found" });
+            }
+
+            // Check if user has enough points to attend the class
+            if (user.points < classInfo.required_points) {
+                return res.status(400).json({ message: "Not enough points to attend this class" });
+            }
+
+            // Deduct points and track class attendance
+            GameUser.updatePoints(user_id, -classInfo.required_points, (err) => {
+                if (err) {
+                    return res.status(500).json({ message: "Error updating user points", error: err });
+                }
+
+                const data = { user_id, class_id, status: 'completed' };
+
+                // Insert the attendance record into CompletedClasses
+                CompletedClasses.insertSingle(data, (err, result) => {
+                    if (err) {
+                        return res.status(500).json(err);
+                    }
+                    res.status(201).json({ message: "Class attended successfully" });
+                });
+            });
+        });
+    });
+};

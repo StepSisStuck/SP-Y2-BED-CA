@@ -1,19 +1,24 @@
-
+// Initialize express router
 const express = require('express');
+// Define router
 const router = express.Router();
+console.log("Starting UserRoutes");
+
+// define routes
 const userController = require('../controllers/userController');
-const auth = require('../middleware/auth');
 
-// Route to fetch all users
-router.get('/users',auth, userController.getAllUsers);
+// Define router
+// POST /users - Create a new user
+router.post('/', userController.createUser);
 
-// Route to fetch user by ID
-router.get('/users/:id', auth, userController.getUserById);
+// GET /users - Retrieve a list of all users
+router.get('/', userController.getAllUsers);
 
-// Route to update username by user ID
-router.put('/users',auth, userController.updateUsername);
+// GET /users/:user_id - Retrieve details of a specific user
+router.get('/:user_id', userController.getUserById);
 
-// Route to delete user by ID
-router.delete('/users/:id',auth, userController.deleteUser);
+// PUT /users/:user_id - Update user details
+router.put('/:user_id', userController.updateUser);
 
+// Export router
 module.exports = router;

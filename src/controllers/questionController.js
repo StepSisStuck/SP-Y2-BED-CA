@@ -1,94 +1,101 @@
-const db = require('../config/db');
+const Question = require('../models/questionModel');
+console.log("Starting questionController");
 
-// Create a question and update user points
-exports.createQuestion = async (req, res) => {
-    const { question } = req.body;
+// Controller function to create a new question
+module.exports.createQuestion = (req, res) => {
+    const { user_id, question } = req.body;
 
-    if (!question) {
-        return res
-            .status(400)
-            .json({ message: "Question and User ID are required" });
+    // Validate required fields
+    if (!user_id || !question) {
+        return res.status(400).json({ message: "User ID and question are required" });
     }
 
-    try {
-        await db.promise().query("INSERT INTO Questions (question, user_id) VALUES (?, ?)", [
+    const data = { creator_id: user_id, question };
+
+    // Insert the new question into the database
+    Question.insertSingle(data, (err, result) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        const newQuestion = {
+            question_id: result.insertId,
             question,
-            req.user_id,
-        ]);
-        await db.promise().query("UPDATE User SET points = points + 150 WHERE user_id = ?", [
-            req.user_id,
-        ]);
-        res.status(200).json({
-            message: "Question created and user points updated successfully",
+            creator_id: user_id
+        };
+        res.status(201).json({ message: "Question created successfully", question: newQuestion });
+    });
+};
+
+// Controller function to get all questions
+module.exports.getAllQuestions = (req, res) => {
+    // Retrieve all questions from the database
+    Question.findAll((err, questions) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        res.status(200).json(questions);
+    });
+};
+
+// Controller function to update a question
+module.exports.updateQuestion = (req, res) => {
+    const questionId = req.params.question_id;
+    const { user_id, question } = req.body;
+
+    // Validate required fields
+    if (!user_id || !question) {
+        return res.status(400).json({ message: "User ID and question are required" });
+    }
+
+    // Find the question by ID
+    Question.findById(questionId, (err, existingQuestion) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (!existingQuestion) {
+            return res.status(404).json({ message: "Question not found" });
+        }
+
+        // Check if the user is the creator of the question
+        if (existingQuestion.creator_id !== user_id) {
+            return res.status(403).json({ message: "Forbidden: You are not the creator of this question" });
+        }
+
+        const data = { question };
+        // Update the question in the database
+        Question.updateById(questionId, data, (err, result) => {
+            if (err) {
+                return res.status(500).json(err);
+            }
+            const updatedQuestion = {
+                question_id: questionId,
+                question,
+                creator_id: user_id
+            };
+            res.status(200).json({ message: "Question updated successfully", question: updatedQuestion });
         });
-    } catch (err) {
-        console.error("Failed to create question or update points:", err);
-        res
-            .status(500)
-            .json({ message: "Failed to create question or update points" });
-    }
+    });
 };
 
-// Fetch all questions
-exports.getAllQuestions = async (req, res) => {
-    try {
-        const [results] = await db.promise().query("SELECT * FROM Questions");
-        res.status(200).json(results);
-    } catch (err) {
-        console.error("Failed to fetch questions:", err);
-        res.status(500).json({ message: "Failed to fetch questions." });
-    }
-};
+// Controller function to delete a question
+module.exports.deleteQuestion = (req, res) => {
+    const questionId = req.params.question_id;
 
-// Fetch a question by ID
-exports.getQuestionById = async (req, res) => {
-    const questionId = req.params.id;
-
-    try {
-        const [results] = await db.promise().query("SELECT * FROM Questions WHERE id = ?", [questionId]);
-
-        if (results.length === 0) {
-            return res.status(404).json({ message: "Question not found." });
+    // Find the question by ID
+    Question.findById(questionId, (err, existingQuestion) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (!existingQuestion) {
+            return res.status(404).json({ message: "Question not found" });
         }
 
-        res.status(200).json(results[0]);
-    } catch (err) {
-        console.error("Failed to fetch question:", err);
-        res.status(500).json({ message: "Failed to fetch question." });
-    }
-};
-
-// Update a question by ID
-exports.updateQuestionById = async (req, res) => {
-    const questionId = req.params.id;
-    const { question } = req.body;
-
-    try {
-        await db.promise().query("UPDATE Questions SET question = ? WHERE id = ?", [
-            question,
-            questionId,
-        ]);
-        res.status(200).json({ message: "Question updated successfully." });
-    } catch (err) {
-        console.error("Failed to update question:", err);
-        res.status(500).json({ message: "Failed to update question." });
-    }
-};
-
-// Delete a question by ID
-exports.deleteQuestionById = async (req, res) => {
-    const questionId = req.params.id;
-
-    try {
-        const [result] = await db.promise().query("DELETE FROM Questions WHERE id = ?", [questionId]);
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Question not found." });
-        }
-
-        res.status(200).json({ message: "Question deleted successfully." });
-    } catch (err) {
-        console.error("Failed to delete question:", err);
-        res.status(500).json({ message: "Failed to delete question." });
-    }
+        // Delete the question from the database
+        Question.deleteById(questionId, (err, result) => {
+            if (err) {
+                return res.status(500).json(err);
+            }
+            res.status(204).send();
+        });
+    });
 };

@@ -1,16 +1,15 @@
-
 const express = require('express');
 const router = express.Router();
 const customizationController = require('../controllers/customizationController');
-const auth = require('../middleware/auth'); // Import your auth middleware if required
 
-// Route to create or update character customization
-router.post('/customization', auth, customizationController.createOrUpdateCustomization);
+// POST /customization - Create or update character customization
+router.post('/', customizationController.upsertCustomization);
 
-// Route to retrieve customization details by user_id
-router.get('/customization/:user_id', auth, customizationController.getCustomizationByUserId);
+// GET /customization/:user_id - Retrieve customization details of a specific user
+router.get('/:user_id', customizationController.getCustomizationByUserId);
 
-// Route to update character customization
-router.put('/customization/:user_id', auth, customizationController.updateCustomization);
+// PUT /customization/:user_id - Update customization details of a specific user
+router.put('/:user_id', customizationController.updateCustomizationByUserId);
+
 
 module.exports = router;

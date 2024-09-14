@@ -1,28 +1,22 @@
 {
+  "name": "bed-ca1-stepsisstuck",
+  "version": "1.0.0",
+  "description": "You are required to build your folder structures for your project.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "init_tables": "node src/configs/createSchema.js && node src/configs/initTables.js",
+    "dev": "nodemon index.js",
+    "run": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "bcrpyt": "^2.0.0",
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "express-validator": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.11.0",
-    "nodemon": "^3.1.4",
-    "readline-sync": "^1.4.10",
-    "supertest": "^7.0.0"
-  },
-  "name": "bed-ca2-main",
-  "version": "1.0.0",
-  "main": "src/server.js",
-  "scripts": {
-    "dev": "nodemon server.js",
-    "init_tables": "node initTable.js",
-    "run": "node src/server.js"
-  },
-  "author": "Stanly Lau",
-  "license": "ISC",
-  "description": ""
+    "mysql2": "^3.10.1",
+    "nodemon": "^3.1.4"
+  }
 }
