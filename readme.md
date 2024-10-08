@@ -1,9 +1,5 @@
 
-# Name, Class and Admin Number
-- Name: Stanly Lau Wei Bin
-- Class: DISM/FT/2B/24
-- Admin Number: P2349080
-
+# Hello! Welcome to this repo!
 
 # About This Project
 This project is for BED CA2. If you wish to view CA1, please refer to the link below. 
