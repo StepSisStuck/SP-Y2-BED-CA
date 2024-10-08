@@ -9,10 +9,7 @@ For more information on CA1: https://github.com/StepSisStuck/SP-Y2-BED-CA2/tree/
 
 # Before you start
 In the case that the node_modules folder does not exist, you can run the following command to install the required modules:
-```
-npm install
-```
-or
+
 ```
 npm install bcrypt dotenv express jsonwebtoken mysql2 nodemon supertest readline-sync
 ```
